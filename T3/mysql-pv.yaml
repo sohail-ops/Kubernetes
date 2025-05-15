@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv
+  labels:
+    app: wp-app
+    tier: database
+    component: mysql
+spec:
+  storageClassName: default  # Use the default StorageClass "standard"
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/sql-pv"
+    type: DirectoryOrCreate

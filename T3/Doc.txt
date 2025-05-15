@@ -1,0 +1,19 @@
+To mount a host directory into minikube container.
+
+Delete minikube container first
+minikube delete
+
+Now start minikube with --mount to mount your host directory into minikube container
+minikube start --mount --mount-string="/your-local-dir-path:/remote-path"
+
+minikube start --mount --mount-string="/home/neosoft/minikube-data:/mnt"
+
+
+
+Connect kubectl to your AKS
+
+az account set --subscription Sub-ID
+az account set --subscription 2abdeaf5-57be-4e45-a610-b137453e2bfc
+
+az aks get-credentials --resource-group "RG-Name" --name "AKS-name" --overwrite-existing
+az aks get-credentials --resource-group Sohail-POC-RG --name sohail-aks --overwrite-existing

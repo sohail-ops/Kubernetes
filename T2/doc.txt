@@ -1,0 +1,19 @@
+To deploy/apply multiple yaml files at once.
+
+Create kustomization.yaml file in which only resources has to define that are to depolyed
+
+resources:
+  - namespace.yaml
+  - mongo-config.yaml
+  - mongo-secret.yaml
+  - mongo.yaml
+  - webapp.yaml
+
+Once this yaml is created from your directory use the following command
+if on the same directory
+kubectl apply -k .
+
+if on the another directory
+kubectl apply -k ./yaml-dir/
+
+This will deploy all mentioned files in kustomization.yaml without needed to run every single yaml

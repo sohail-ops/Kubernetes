@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wp-deployment
+  namespace: task3
+  labels:
+    app: wp-app
+    tier: frontend
+    component: wordpress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wp-app
+      tier: frontend
+      component: wordpress
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wp-app
+        tier: frontend
+        component: wordpress
+    spec:
+      containers:
+      - name: wp-app-cont
+        image: wordpress:6.7.1-apache
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: mysql-service
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wp-app-srt
+              key: password
+        - name: WORDPRESS_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: wp-app-srt
+              key: username
+        - name: WORDPRESS_DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: wp-app-srt
+              key: dbname
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        volumeMounts:
+        - name: wp-pv
+          mountPath: /var/www/html
+      volumes:
+      - name: wp-pv
+        persistentVolumeClaim:
+          claimName: wp-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wp-service
+  namespace: task3
+  labels:
+    app: wp-app
+    tier: frontend
+    component: wordpress
+spec:
+  type: ClusterIP
+  selector:
+    app: wp-app
+    tier: frontend
+    component: wordpress
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

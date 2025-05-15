@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: task3
+  labels:
+    app: wp-app
+    tier: database
+    component: mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: default
+  selector:
+    matchLabels:
+      app: wp-app
+      tier: database
+      component: mysql

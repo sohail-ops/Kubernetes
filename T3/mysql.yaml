@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-deployment
+  namespace: task3
+  labels:
+    app: wp-app
+    tier: database
+    component: mysql
+spec:
+  serviceName: mysql-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wp-app
+      tier: database
+      component: mysql
+  template:
+    metadata:
+      labels:
+        app: wp-app
+        tier: database
+        component: mysql
+    spec:
+      containers:
+      - name: mysqldb-cont
+        image: mysql:8.4
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wp-app-srt
+              key: rootpassword
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: wp-app-srt
+              key: dbname
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: wp-app-srt
+              key: username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wp-app-srt
+              key: password
+        ports:
+        - containerPort: 3306
+          protocol: TCP
+        volumeMounts:
+        - name: mysql-pv
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-pv
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  namespace: task3
+  labels:
+    app: wp-app
+    tier: database
+    component: mysql
+spec:
+  selector:
+    app: wp-app
+    tier: database
+    component: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306

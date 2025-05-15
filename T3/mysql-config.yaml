@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+  namespace: task3
+  labels:
+    app: wp-app
+    tier: database
+    component: mysql
+data:
+  mysql-url: mysql-service
