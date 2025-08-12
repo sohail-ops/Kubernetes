@@ -10,16 +10,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header X-Forwarded-Proto https;
 spec:
   ingressClassName: nginx
-  tls:
-  - hosts:
-      - wordpress.i2d.work.gd
-    secretName: ssl-28-04-25  # This should be a TLS secret in the same namespace
   rules:
   - host: wordpress.i2d.work.gd
     http:
