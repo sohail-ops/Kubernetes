@@ -47,13 +47,13 @@ spec:
         ports:
         - containerPort: 80
           protocol: TCP
-        volumeMounts:
-        - name: wp-pv
-          mountPath: /var/www/html
-      volumes:
-      - name: wp-pv
-        persistentVolumeClaim:
-          claimName: wp-pvc
+      #   volumeMounts:
+      #   - name: wp-pv
+      #     mountPath: /var/www/html
+      # volumes:
+      # - name: wp-pv
+      #   persistentVolumeClaim:
+      #     claimName: wp-pvc
 ---
 apiVersion: v1
 kind: Service
