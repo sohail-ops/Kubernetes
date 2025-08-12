@@ -13,13 +13,23 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: wordpress.i2d.work.gd
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: wp-service
-            port:
-              number: 80
+    - host: wordpress.i2d.work.gd
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: wp-service
+                port:
+                  number: 80
+    - host: "" # Catch-all for IP-based access
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: wp-service
+                port:
+                  number: 80
